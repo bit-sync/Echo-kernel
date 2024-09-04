@@ -1,12 +1,9 @@
-#include "include/screen.h"
+#include "echo.h"
 
 void boot(void) {
 	clear_screen();
+	print("booted echo kernel.\nthanks for using a beta version!");
 	return;
 }
 
-void main(void) {
-	print_hello_world();
-	return;
-}
 
