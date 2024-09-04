@@ -11,12 +11,10 @@ section .text
 
 global start
 extern boot 				;this is defined in the c file
-extern main
 start:
 	cli 				;block interrupts
 	mov esp, stack_space		;set stack pointer
 	call boot
-        call main
 	hlt 				;halt the CPU
 
 section .bss
