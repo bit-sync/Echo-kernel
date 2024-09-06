@@ -1,3 +1,5 @@
+set -e
+
 echo making dirs
 
 mkdir iso

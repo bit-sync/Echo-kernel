@@ -1,3 +1,5 @@
+set -e
+
 cd ~/Echo-kernel/src
 
 echo starting vm
