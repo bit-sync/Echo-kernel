@@ -16,6 +16,6 @@ jobs:
       - name: build
         run: |
           cd ${{ github.workspace }}/src
-          bash scripts/build-actions.sh
+          bash scripts/build.sh
 
           
