@@ -17,6 +17,7 @@ jobs:
           cd ${{ github.workspace }}/src
           sudo apt full-upgrade -y
           sudo apt install gcc nasm -y
+          mkdir tmp
       - name: build
         run: |
           cd ${{ github.workspace }}/src
