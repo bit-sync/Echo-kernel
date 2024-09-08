@@ -6,7 +6,7 @@ cd /home/runner/work/Echo-kernel/Echo-kernel/src
 
 echo Installing dependancies
 
-sudo apt install nasm git gcc grub -y
+sudo apt install nasm git gcc grub2 -y
 
 echo done
 
