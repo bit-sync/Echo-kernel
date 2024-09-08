@@ -28,8 +28,8 @@ jobs:
         run: |
          cd ${{ github.workspace }}/src
          git clone --depth 1 -b iso https://github.com/Extraskilled56/Echo-kernel.git
-         git config user.name "Echo bot"
-         git config user.email "echo@echo.com"
+         git config --global user.name "Echo bot"
+         git config --global user.email "echo@echo.com"
          mv *.iso Echo-kernel/Echo-kernel-$ECHO_VERSION.iso
          cd Echo-kernel
          git add *.iso
