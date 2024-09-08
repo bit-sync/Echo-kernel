@@ -34,7 +34,7 @@ echo copying files...
 
 cp kernel iso/boot
 
-cp ${{ github.workspace }}/Echo-kernel/grub-config/grub.cfg iso/boot/grub 
+cp /home/runner/work/Echo-kernel/Echo-kernel/grub-config/grub.cfg iso/boot/grub 
 
 echo done
 
