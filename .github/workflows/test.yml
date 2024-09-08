@@ -19,4 +19,4 @@ jobs:
       - name: build
         run: |
           cd ${{ github.workspace }}
-          sudo apt install gcc nasm ld
+          sudo apt install gcc nasm
