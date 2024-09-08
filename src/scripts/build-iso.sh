@@ -1,5 +1,7 @@
 set -e
 
+ECHO_VERSION="0.0.2"
+
 echo making dirs
 
 mkdir iso
@@ -26,9 +28,9 @@ echo done
 
 echo creating ISO...
 
-grub-mkrescue -o Echo-kernel-1.0.0.iso
+grub-mkrescue -o Echo-kernel-$ECHO_VERSION.iso
 
-grub-mkrescue -o Echo-kernel-1.0.0.iso iso
+grub-mkrescue -o Echo-kernel-$ECHO_VERSION.iso iso
 
 echo done
 
