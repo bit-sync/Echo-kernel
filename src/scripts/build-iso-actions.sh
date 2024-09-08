@@ -10,7 +10,7 @@ sudo apt install nasm git gcc grub2 mtools -y
 
 echo done
 
-ECHO_VERSION="0.0.2"
+export ECHO_VERSION="0.0.2"
 
 echo making dirs
 
