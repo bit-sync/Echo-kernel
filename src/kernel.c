@@ -44,7 +44,7 @@ void idt_init(void)
 {
 	unsigned long keyboard_address;
 	unsigned long idt_address;
-	unsigned long idt_ptr[2];
+	unsigned long idt_ptr[2];f
 
 	/* populate IDT entry of keyboard's interrupt */
 	keyboard_address = (unsigned long)keyboard_handler;
