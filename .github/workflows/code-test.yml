@@ -31,5 +31,7 @@ jobs:
          cd Echo-kernel
          git config user.name "Echo bot"
          git config user.email "echo@echo.com"
-         echo $ECHO-VERSION
+         git add *.iso
+         git commit -m "Add iso"
+         git push --force
           
