@@ -2,7 +2,7 @@ set -e
 
 echo DO NOT RUN ON PERSONAL SYSTEM - ONLY FOR GITHUB ACTIONS!!!!
 
-cd ${{ github.workspace }}/src
+cd /home/runner/work/Echo-kernel/Echo-kernel/src
 
 echo Installing dependancies
 
