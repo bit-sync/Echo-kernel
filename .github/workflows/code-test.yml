@@ -24,7 +24,7 @@ jobs:
       - name: Build ISO
         run: |
           cd ${{ github.workspace }}/src
-          bash scripts/build_iso.sh
+          bash scripts/build-iso.sh
       - name: Upload ISO
         run: |
          cd ~/
