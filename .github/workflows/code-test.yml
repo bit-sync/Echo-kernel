@@ -7,11 +7,6 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-      - name: Get test program
-        run: |
-          cd ${{ github.workspace }}/src
-          wget https://github.com/Extraskilled56/Echo-kernel/raw/main/build-test/build-test
-          chmod +x build-test
       - name: Get enviroment ready
         run: |
           cd ${{ github.workspace }}/src
@@ -21,6 +16,6 @@ jobs:
       - name: build
         run: |
           cd ${{ github.workspace }}/src
-          ./build-test
+          bash scripts/build-actions.sh
 
           
