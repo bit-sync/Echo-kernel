@@ -10,7 +10,6 @@ jobs:
       - name: Get enviroment ready
         run: |
           cd ${{ github.workspace }}/src
-          sudo apt install gcc nasm -y
           mkdir tmp
       - name: build
         run: |

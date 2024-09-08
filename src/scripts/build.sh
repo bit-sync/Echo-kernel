@@ -1,5 +1,11 @@
 echo building...
 
+echo Installing dependancies
+
+sudo apt install nasm git gcc -y
+
+echo done
+
 ECHO_VERSION="0.0.2"
 nasm -f elf32 kernel.asm -o tmp/kasm.o
 gcc -fno-stack-protector -m32 -c kernel.c -o tmp/kc.o
