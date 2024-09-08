@@ -26,6 +26,8 @@ jobs:
           bash scripts/build-iso-actions.sh
       - name: Upload ISO
         run: |
+         git config --global user.email "you@example.com"
+         git config --global user.name "Your Name"
          cd ${{ github.workspace }}/src
          git clone --depth 1 -b iso https://github.com/Extraskilled56/Echo-kernel.git
          mv *.iso Echo-kernel/Echo-kernel-$ECHO_VERSION.iso
