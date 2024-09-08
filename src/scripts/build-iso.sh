@@ -18,7 +18,7 @@ echo done
 
 echo copying files...
 
-cp ec-kernel iso/boot
+cp kernel iso/boot
 
 cp ~/Echo-kernel/grub-config/grub.cfg iso/boot/grub 
 
