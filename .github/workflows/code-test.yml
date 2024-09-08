@@ -16,5 +16,21 @@ jobs:
         run: |
           cd ${{ github.workspace }}/src
           bash scripts/build.sh
-
+  publish-iso:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Build ISO
+        run: |
+          cd ${{ github.workspace }}/src
+          bash scripts/build_iso.sh
+      - name: Upload ISO
+        run: |
+         cd ~/
+         git clone --depth 1 -b iso https://github.com/Extraskilled56/Echo-kernel.git
+         cd Echo-kernel
+         git config user.name "Echo bot"
+         git config user.email "echo@echo.com"
+         echo $ECHO-VERSION
           
