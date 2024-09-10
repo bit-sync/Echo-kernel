@@ -20,7 +20,7 @@ mkdir iso/boot
 
 mkdir iso/boot/grub
 
-mkdir tmp
+
 
 echo done
 
