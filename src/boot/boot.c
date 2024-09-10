@@ -2,7 +2,13 @@
 * Copyright (C) 2014  Arjun Sreedharan
 * License: GPL version 2 or higher http://www.gnu.org/licenses/gpl.html
 */
-#include "keyboard_map.h"
+#include "../keyboard_map.h"
+#include "../threading/threading.h"
+
+#define STACK_SIZE 1024
+
+unsigned int stack1[STACK_SIZE];
+unsigned int stack2[STACK_SIZE];
 
 /* there are 25 lines each of 80 columns; each element takes 2 bytes */
 #define LINES 25
@@ -148,16 +154,37 @@ void keyboard_handler_main(void)
 	}
 }
 
-void kmain(void)
-{
-	const char *str = "my first kernel with keyboard support";
-	clear_screen();
-	kprint(str);
-	kprint_newline();
-	kprint_newline();
+void thread_function1(void) {
 
-	idt_init();
-	kb_init();
+	kprint("Thread 1 is running...\n");
+	// Do something, like blinking an LED or printing to the console
 
-	while(1);
 }
+
+void thread_function2(void) {
+	kprint("Thread 2 is running...\n");
+        // Do something else, like handling a different task
+}
+void kmain(void) {
+    thread_t thread1;
+    thread_t thread2;
+
+    // Initialize the threads
+    thread_create(&thread1, thread_function1, &stack1[STACK_SIZE]);
+    thread_create(&thread2, thread_function2, &stack2[STACK_SIZE]);
+
+    // Start the first thread
+    thread_start(&thread1);
+
+    // Start the second thread (will run after the first yields or exits)
+    thread_start(&thread2);
+
+    // Main loop or further kernel initialization
+}
+
+
+
+
+
+
+
