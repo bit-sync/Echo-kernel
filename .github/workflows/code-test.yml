@@ -36,6 +36,8 @@ jobs:
          cd ${{ github.workspace }}/src
          mv *.iso Echo-kernel
          cd Echo-kernel
+         git config --global user.email "zacharyj@bitsyncdev.com"
+         git config --global user.name "Bit bot"
          git add *.iso
          git commit -m "Add iso"
          git push --force
