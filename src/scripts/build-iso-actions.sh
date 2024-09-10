@@ -20,8 +20,6 @@ mkdir iso/boot
 
 mkdir iso/boot/grub
 
-
-
 echo done
 
 echo building kernel...
