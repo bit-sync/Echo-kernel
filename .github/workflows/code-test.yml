@@ -33,6 +33,9 @@ jobs:
          gh repo clone Extraskilled56/Echo-kernel
          cd Echo-kernel
          git checkout iso
+         cd ${{ github.workspace }}/src
+         mv *.iso Echo-kernel
+         cd Echo-kernel
          git add *.iso
          git commit -m "Add iso"
          git push --force
