@@ -16,28 +16,21 @@ jobs:
         run: |
           cd ${{ github.workspace }}/src
           bash scripts/build.sh
-  publish-iso:
+  upload-iso:
     runs-on: ubuntu-latest
+    name: Upload
     steps:
-      - name: Check out repository code
-        uses: actions/checkout@v4
-      - name: Build ISO
-        run: |
-          cd ${{ github.workspace }}/src
-          bash scripts/build-iso-actions.sh
-      - name: Upload ISO
-        run: |
-         echo "${{ secrets.GH_TOKEN }}" > mytoken.txt
-         gh auth login --with-token < mytoken.txt
-         cd ${{ github.workspace }}/src
-         gh repo clone Extraskilled56/Echo-kernel
-         cd Echo-kernel
-         git checkout iso
-         cd ${{ github.workspace }}/src
-         mv *.iso Echo-kernel
-         cd Echo-kernel
-         git config --global user.email "zacharyj@bitsyncdev.com"
-         git add *.iso
-         git commit -m "Add iso"
-         git push --force
-         
+      - name: Checkout
+        uses: actions/checkout@v2
+        # Setup node first
+      - name: Setup node
+        uses: actions/setup-node@v1
+      - name: Upload to GitHub
+        uses: LasyIsLazy/github-upload-action@v0.1.0
+        with:
+          access-token: ${{ secrets.ACCESS }}
+          file-path: ${{ github.workspace }}/src/Echo-kernel-$ECHO_VERSION.iso
+          owner: Extraskilled56
+          repo: Echo-kernel
+          branch-name: iso
+          commit-message: add iso
