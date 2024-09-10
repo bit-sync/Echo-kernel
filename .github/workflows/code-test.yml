@@ -15,7 +15,7 @@ jobs:
       - name: build
         run: |
           cd ${{ github.workspace }}/src
-          bash scripts/build.sh
+          bash scripts/build-iso-actions.sh
         # Setup node first
       - name: Setup node
         uses: actions/setup-node@v1
