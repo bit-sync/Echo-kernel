@@ -11,6 +11,7 @@ jobs:
         run: |
           cd ${{ github.workspace }}/src
           mkdir tmp
+          sudo apt install gh -y
       - name: build
         run: |
           cd ${{ github.workspace }}/src
@@ -32,8 +33,9 @@ jobs:
          git clone --depth 1 -b iso https://github.com/Extraskilled56/Echo-kernel.git
          mv *.iso Echo-kernel/Echo-kernel-$ECHO_VERSION.iso
          cd Echo-kernel
-         git remote add orgmain --master iso https://bit-bot56:${{ secrets.GH_PASSWORD }}@github.com/Extraskilled56/Echo-kernel.git
+         echo "${{ secrets.GH_TOKEN }}" > mytoken.txt
+         gh auth login --with-token < mytoken.txt
          git add *.iso
          git commit -m "Add iso"
-         git push orgmain --force
+         git push --force
          
