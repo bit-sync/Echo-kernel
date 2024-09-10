@@ -16,10 +16,6 @@ jobs:
         run: |
           cd ${{ github.workspace }}/src
           bash scripts/build.sh
-  upload-iso:
-    runs-on: ubuntu-latest
-    name: Upload
-    steps:
       - name: Checkout
         uses: actions/checkout@v2
         # Setup node first
