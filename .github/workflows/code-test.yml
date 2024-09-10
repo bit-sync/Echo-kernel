@@ -10,21 +10,12 @@ jobs:
       - name: Get enviroment ready
         run: |
           cd ${{ github.workspace }}/src
+          sudo apt full-upgrade -y
+          sudo apt install gcc nasm -y
           mkdir tmp
-          sudo apt install gh -y
       - name: build
         run: |
           cd ${{ github.workspace }}/src
-          bash scripts/build-iso-actions.sh
-        # Setup node first
-      - name: Setup node
-        uses: actions/setup-node@v1
-      - name: Upload to GitHub
-        uses: LasyIsLazy/github-upload-action@v0.1.0
-        with:
-          access-token: ${{ secrets.ACCESS }}
-          file-path: ${{ github.workspace }}/src/Echo-kernel-0.0.2.iso
-          owner: Extraskilled56
-          repo: Echo-kernel
-          branch-name: iso
-          commit-message: add iso
+          bash scripts/build.sh
+
+          
