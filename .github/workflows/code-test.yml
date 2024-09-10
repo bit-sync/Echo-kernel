@@ -16,8 +16,6 @@ jobs:
         run: |
           cd ${{ github.workspace }}/src
           bash scripts/build.sh
-      - name: Checkout
-        uses: actions/checkout@v2
         # Setup node first
       - name: Setup node
         uses: actions/setup-node@v1
