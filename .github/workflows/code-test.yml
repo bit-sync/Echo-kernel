@@ -27,14 +27,12 @@ jobs:
           bash scripts/build-iso-actions.sh
       - name: Upload ISO
         run: |
-         git config --global user.email "zacharyj@bitsyncdev.com"
-         git config --global user.name "bit-bot56"
-         cd ${{ github.workspace }}/src
-         git clone --depth 1 -b iso https://github.com/Extraskilled56/Echo-kernel.git
-         mv *.iso Echo-kernel/Echo-kernel-$ECHO_VERSION.iso
-         cd Echo-kernel
          echo "${{ secrets.GH_TOKEN }}" > mytoken.txt
          gh auth login --with-token < mytoken.txt
+         cd ${{ github.workspace }}/src
+         gh repo clone Extraskilled56/Echo-kernel
+         cd Echo-kernel
+         git checkout iso
          git add *.iso
          git commit -m "Add iso"
          git push --force
