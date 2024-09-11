@@ -6,7 +6,7 @@ sudo apt install nasm git gcc -y
 
 echo done
 
-export ECHO_VERSION="0.0.2test"
+export ECHO_VERSION="0.0.6_Alpha"
 
 echo making dirs
 
