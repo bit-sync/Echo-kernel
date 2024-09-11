@@ -1,14 +1,68 @@
-/*
-* Copyright (C) 2014  Arjun Sreedharan
-* License: GPL version 2 or higher http://www.gnu.org/licenses/gpl.html
-*/
-#include "keyboard_map.h"
+#ifndef KEYBOARD_H
+#define KEYBOARD_H
+#include "display.h"
 
-/* there are 25 lines each of 80 columns; each element takes 2 bytes */
-#define LINES 25
-#define COLUMNS_IN_LINE 80
-#define BYTES_FOR_EACH_ELEMENT 2
-#define SCREENSIZE BYTES_FOR_EACH_ELEMENT * COLUMNS_IN_LINE * LINES
+#define CL_BLACK            0x00
+#define CL_BLUE             0x01
+#define CL_GREEN            0x02
+#define CL_CYAN             0x03
+#define CL_RED              0x04
+#define CL_MAGENTA          0x05
+#define CL_BROWN            0x06
+#define CL_LIGHT_GREY       0x07
+#define CL_DARK_GREY        0x08
+#define CL_LIGHT_BLUE       0x09
+#define CL_LIGHT_GREEN      0x10
+#define CL_LIGHT_CYAN       0x11
+#define CL_LIGHT_RED        0x12
+#define CL_LIGHT_MAGENTA    0x13
+#define CL_LIGHT_BROWN      0x14
+#define CL_WHITE            0x0f
+
+/* The following array is taken from 
+    http://www.osdever.net/bkerndev/Docs/keyboard.htm
+   All credits where due
+*/
+
+unsigned char keyboard_map[128] =
+{
+    0,  27, '1', '2', '3', '4', '5', '6', '7', '8',	/* 9 */
+  '9', '0', '-', '=', '\b',	/* Backspace */
+  '\t',			/* Tab */
+  'q', 'w', 'e', 'r',	/* 19 */
+  't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\n',	/* Enter key */
+    0,			/* 29   - Control */
+  'a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';',	/* 39 */
+ '\'', '`',   0,		/* Left shift */
+ '\\', 'z', 'x', 'c', 'v', 'b', 'n',			/* 49 */
+  'm', ',', '.', '/',   0,				/* Right shift */
+  '*',
+    0,	/* Alt */
+  ' ',	/* Space bar */
+    0,	/* Caps lock */
+    0,	/* 59 - F1 key ... > */
+    0,   0,   0,   0,   0,   0,   0,   0,
+    0,	/* < ... F10 */
+    0,	/* 69 - Num lock*/
+    0,	/* Scroll Lock */
+    0,	/* Home key */
+    0,	/* Up Arrow */
+    0,	/* Page Up */
+  '-',
+    0,	/* Left Arrow */
+    0,
+    0,	/* Right Arrow */
+  '+',
+    0,	/* 79 - End key*/
+    0,	/* Down Arrow */
+    0,	/* Page Down */
+    0,	/* Insert Key */
+    0,	/* Delete Key */
+    0,   0,   0,
+    0,	/* F11 Key */
+    0,	/* F12 Key */
+    0,	/* All other keys are undefined */
+};
 
 #define KEYBOARD_DATA_PORT 0x60
 #define KEYBOARD_STATUS_PORT 0x64
@@ -17,6 +71,7 @@
 #define KERNEL_CODE_SEGMENT_OFFSET 0x08
 
 #define ENTER_KEY_CODE 0x1C
+#define NEWLINE_KEY_CODE 0x0A
 
 extern unsigned char keyboard_map[128];
 extern void keyboard_handler(void);
@@ -24,10 +79,7 @@ extern char read_port(unsigned short port);
 extern void write_port(unsigned short port, unsigned char data);
 extern void load_idt(unsigned long *idt_ptr);
 
-/* current cursor location */
-unsigned int current_loc = 0;
-/* video memory begins at address 0xb8000 */
-char *vidptr = (char*)0xb8000;
+
 
 struct IDT_entry {
 	unsigned short int offset_lowerbits;
@@ -99,30 +151,6 @@ void kb_init(void)
 	write_port(0x21 , 0xFD);
 }
 
-void kprint(const char *str)
-{
-	unsigned int i = 0;
-	while (str[i] != '\0') {
-		vidptr[current_loc++] = str[i++];
-		vidptr[current_loc++] = 0x07;
-	}
-}
-
-void kprint_newline(void)
-{
-	unsigned int line_size = BYTES_FOR_EACH_ELEMENT * COLUMNS_IN_LINE;
-	current_loc = current_loc + (line_size - current_loc % (line_size));
-}
-
-void clear_screen(void)
-{
-	unsigned int i = 0;
-	while (i < SCREENSIZE) {
-		vidptr[i++] = ' ';
-		vidptr[i++] = 0x07;
-	}
-}
-
 void keyboard_handler_main(void)
 {
 	unsigned char status;
@@ -139,25 +167,26 @@ void keyboard_handler_main(void)
 			return;
 
 		if(keycode == ENTER_KEY_CODE) {
-			kprint_newline();
+			print_newline();
 			return;
 		}
+		if(keycode == ENTER_KEY_CODE) {
+			print_newline();
+            return;
+		}
+		if(keycode == 0x0E) { // Backspace key code
+            if(current_loc > 0) {
+                current_loc -= 2; // Move back two bytes (one for character and one for color)
+                vidptr[current_loc] = ' ';
+                vidptr[current_loc + 1] = 0x07;
+            }
+            return;
+        }
 
 		vidptr[current_loc++] = keyboard_map[(unsigned char) keycode];
 		vidptr[current_loc++] = 0x07;
 	}
+
 }
 
-void kmain(void)
-{
-	const char *str = "my first kernel with keyboard support";
-	clear_screen();
-	kprint(str);
-	kprint_newline();
-	kprint_newline();
-
-	idt_init();
-	kb_init();
-
-	while(1);
-}
+#endif
