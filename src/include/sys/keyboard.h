@@ -150,7 +150,11 @@ void kb_init(void)
 	/* 0xFD is 11111101 - enables only IRQ1 (keyboard)*/
 	write_port(0x21 , 0xFD);
 }
-
+void kb_disable(void)
+{
+    /* 0xFF is 11111111 - disables all IRQs */
+    write_port(0x21, 0xFF);
+}
 void keyboard_handler_main(void)
 {
 	unsigned char status;
@@ -170,10 +174,6 @@ void keyboard_handler_main(void)
 			print_newline();
 			return;
 		}
-		if(keycode == ENTER_KEY_CODE) {
-			print_newline();
-            return;
-		}
 		if(keycode == 0x0E) { // Backspace key code
             if(current_loc > 0) {
                 current_loc -= 2; // Move back two bytes (one for character and one for color)
@@ -186,7 +186,5 @@ void keyboard_handler_main(void)
 		vidptr[current_loc++] = keyboard_map[(unsigned char) keycode];
 		vidptr[current_loc++] = 0x07;
 	}
-
 }
-
 #endif
