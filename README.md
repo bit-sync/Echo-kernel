@@ -1,8 +1,8 @@
-Echo kernel is a custom-made kernel in c and assembly
+Echo kernel is a custom-made kernel in C and Assembly
 
 
 
-# ISO's
+# ISOs
 
 
 
