@@ -1,8 +1,9 @@
 all: build
 
-ECHO_VERSION ="0.1.0_Alpha"
+ECHO_VERSION ="0.1.5_Alpha"
 
 build:
+	@mkdir tmp
 	@echo building...
 	@echo Installing dependancies
 	@sudo apt install nasm git gcc -y
@@ -10,6 +11,7 @@ build:
 	@nasm -f elf32 src/boot/boot.asm -o tmp/kasm.o
 	@gcc -fno-stack-protector -m32 -c src/boot/boot.c -o tmp/kc.o
 	@ld -m elf_i386 -T link.ld -o kernel tmp/kasm.o tmp/kc.o
+	@rm -rf tmp
 	@echo done
 
 iso:
@@ -27,3 +29,6 @@ iso:
 vm-test:
 	@qemu-system-i386 -kernel kernel
 
+clean:
+	@rm -rf tmp
+	@rm kernel
