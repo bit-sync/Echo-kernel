@@ -24,7 +24,7 @@ build:
 	@mkdir -p tmp
 	@echo building...
 	@echo Installing dependencies...
-	@sudo apt install nasm git gcc -y
+	@sudo apt install nasm git gcc grub-common xorriso -y
 	@echo done
 	@nasm -f elf32 src/boot/boot.asm -o tmp/kasm.o
 	@gcc -fno-stack-protector -m32 -c src/boot/boot.c -o tmp/kc.o
