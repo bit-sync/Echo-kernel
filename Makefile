@@ -9,6 +9,10 @@ endif
 # Load .config settings if the file exists
 -include .config
 
+ifeq ($(CONFIG_HELLO_WORLD),y)
+	CFLAGS += -DHELLO_WORLD
+endif
+
 all: check_build
 
 check_build:
@@ -26,12 +30,16 @@ build:
 	@echo Installing dependencies...
 	@sudo apt install nasm git gcc grub-common xorriso -y
 	@echo done
-	@nasm -f elf32 src/boot/boot.asm -o tmp/kasm.o
-	@gcc -fno-stack-protector -m32 -c src/boot/boot.c -o tmp/kc.o
-	@ld -m elf_i386 -T link.ld -o ecImage tmp/kasm.o tmp/kc.o
+	@nasm -f elf32 src/bootloader/boot.asm -o tmp/kasm.o
+	@nasm -f elf32 src/drivers/keyboard.asm -o tmp/keyboard_asm.o
+	@g++ $(CFLAGS) -fno-stack-protector -m32 -c src/bootloader/boot.cpp -o tmp/kc.o
+	@g++ $(CFLAGS) -fno-stack-protector -m32 -c src/sys/keyboard.cpp -o tmp/kkeyboard.o
+	@g++ $(CFLAGS) -fno-stack-protector -m32 -c src/sys/display.cpp -o tmp/kdisplay.o
+	@g++ $(CFLAGS) -fno-stack-protector -m32 -c src/lib.cpp -o tmp/klib.o
+	@ld -m elf_i386 -T link.ld -o ecImage tmp/kasm.o tmp/keyboard_asm.o tmp/kc.o tmp/kkeyboard.o tmp/kdisplay.o tmp/klib.o
 	@rm -rf tmp
 	@echo done
-
+	
 iso:
 	@echo building iso...
 	@mkdir -p iso/boot/grub
