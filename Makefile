@@ -22,7 +22,6 @@ check_build:
 		$(MAKE) build; \
 	fi
 
-ECHO_VERSION = "0.1.5_Alpha"
 
 build:
 	@mkdir -p tmp
@@ -58,4 +57,5 @@ clean:
 	@rm -f ecImage
 
 menuconfig:
+	@pip install kconfiglib
 	@menuconfig

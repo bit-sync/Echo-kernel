@@ -2,7 +2,7 @@ menu "Kernel Information"
 
 config VERSION
     string "Kernel Version"
-    default "1.0"
+    default "1.0.0"
 
 config SUBVERSION
     string "Kernel Subversion"
