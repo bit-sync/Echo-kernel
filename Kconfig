@@ -14,7 +14,7 @@ menu "Building Options"
 
 config BUILD_ISO
     bool "Build ISO"
-    default "n"
+    default n
     help
         Build ISO image
 
