@@ -83,6 +83,9 @@ namespace lib {
         }
         return nullptr;
     }
+    void halt(void) {
+        asm volatile("hlt");
+    }
 
     // Memory functions
     void* memcpy(void* dest, const void* src, size_t n) {

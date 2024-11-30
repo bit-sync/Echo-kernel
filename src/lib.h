@@ -8,7 +8,7 @@
 namespace lib {
     // Time functions
     void sleep(uint32_t milliseconds);
-    
+    void halt(void);
     // String functions
     size_t strlen(const char* str);
     int strcmp(const char* str1, const char* str2);
