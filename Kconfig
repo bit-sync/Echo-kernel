@@ -1,0 +1,32 @@
+menu "Kernel Information"
+
+config VERSION
+    string "Kernel Version"
+    default "1.0.0"
+
+config SUBVERSION
+    string "Kernel Subversion"
+    default "r1"
+
+
+
+endmenu
+
+
+menu "Building Options"
+
+config BUILD_ISO
+    bool "Build ISO"
+    default n
+    help
+        Build ISO image
+
+endmenu
+
+config DEBUG
+    bool "Enable Debug Messages"
+    default n
+    help
+        Enable detailed debug messages throughout the kernel.
+        This is useful for development and troubleshooting.
+
