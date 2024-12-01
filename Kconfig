@@ -7,6 +7,9 @@ config VERSION
 config SUBVERSION
     string "Kernel Subversion"
     default "r1"
+
+
+
 endmenu
 
 
@@ -19,4 +22,11 @@ config BUILD_ISO
         Build ISO image
 
 endmenu
+
+config DEBUG
+    bool "Enable Debug Messages"
+    default n
+    help
+        Enable detailed debug messages throughout the kernel.
+        This is useful for development and troubleshooting.
 

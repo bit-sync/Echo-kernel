@@ -13,6 +13,10 @@ ifeq ($(CONFIG_HELLO_WORLD),y)
 	CFLAGS += -DHELLO_WORLD
 endif
 
+ifeq ($(CONFIG_DEBUG),y)
+	CFLAGS += -DDEBUG
+endif
+
 all: check_build
 
 check_build:
@@ -34,8 +38,9 @@ build:
 	@g++ $(CFLAGS) -fno-stack-protector -m32 -c src/bootloader/boot.cpp -o tmp/kc.o
 	@g++ $(CFLAGS) -fno-stack-protector -m32 -c src/sys/keyboard.cpp -o tmp/kkeyboard.o
 	@g++ $(CFLAGS) -fno-stack-protector -m32 -c src/sys/display.cpp -o tmp/kdisplay.o
+	@g++ $(CFLAGS) -fno-stack-protector -m32 -c src/sys/memory.cpp -o tmp/kmemory.o
 	@g++ $(CFLAGS) -fno-stack-protector -m32 -c src/lib.cpp -o tmp/klib.o
-	@ld -m elf_i386 -T link.ld -o ecImage tmp/kasm.o tmp/keyboard_asm.o tmp/kc.o tmp/kkeyboard.o tmp/kdisplay.o tmp/klib.o
+	@ld -m elf_i386 -T link.ld -o ecImage tmp/kasm.o tmp/keyboard_asm.o tmp/kc.o tmp/kkeyboard.o tmp/kdisplay.o tmp/kmemory.o tmp/klib.o
 	@rm -rf tmp
 	@echo done
 	

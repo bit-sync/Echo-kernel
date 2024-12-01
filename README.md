@@ -9,6 +9,16 @@ A minimalist kernel written in Assembly and C++, designed for educational purpos
 - Basic bootloader implementation
 - Standard library with common utilities
 - Configurable kernel options
+- Interactive shell (Eshell) with command support
+- Power management (ACPI/APM shutdown support)
+
+## Shell Commands
+
+Echo Kernel comes with an interactive shell (Eshell) that supports the following commands:
+
+- `clear` - Clear the screen
+- `shutdown` - Safely shutdown the system
+- `help` - Display available commands
 
 ## Building
 
@@ -44,10 +54,13 @@ make iso
 - At least 32MB RAM
 - VGA-compatible display
 - PS/2 keyboard
+- ACPI or APM support (for shutdown functionality)
 
 ## Documentation
 
-Comprehensive documentation is available in the `/docs` directory and on our [documentation website](https://docs.example.com/echo-kernel).
+Comprehensive documentation is available in the `/docs` directory:
+- `display.md` - Display subsystem documentation
+- `eshell.md` - Shell interface documentation
 
 ## Project Structure
 
@@ -70,4 +83,4 @@ Contributions are welcome! Please read our contributing guidelines before submit
 
 ## License
 
-[Insert your license information here]
+This project is licensed under the terms found in the LICENSE file.

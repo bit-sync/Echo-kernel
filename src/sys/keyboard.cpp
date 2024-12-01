@@ -1,6 +1,6 @@
 #include "keyboard.h"
 #include "display.h"
-#include "../types.h"
+#include "../lib.h"
 
 extern "C" void keyboard_handler(void);
 extern "C" char read_port(unsigned short port);
