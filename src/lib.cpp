@@ -209,4 +209,62 @@ namespace lib {
     char toupper(char c) {
         return islower(c) ? c - ('a' - 'A') : c;
     }
+
+    // Split a string by spaces into tokens
+    size_t split(const char* str, char** tokens, size_t max_tokens) {
+        size_t count = 0;
+        const char* p = str;
+        while (*p && count < max_tokens) {
+            // Skip leading spaces
+            while (*p == ' ') p++;
+            if (*p == '\0') break;
+            tokens[count++] = (char*)p;
+            // Find end of token
+            while (*p && *p != ' ') p++;
+            if (*p == ' ') {
+                *((char*)p) = '\0'; // Cast away const for in-place modification
+                p++;
+            }
+        }
+        return count;
+    }
+
+    // Minimal sscanf: supports "%15s = %d" pattern only
+    int mini_sscanf(const char* str, const char* fmt, char* out_str, int* out_int) {
+        // Only supports pattern "%15s = %d"
+        // Skip leading whitespace
+        while (*str == ' ') str++;
+        // Read variable name
+        int i = 0;
+        while (*str && *str != ' ' && *str != '=' && i < 15) {
+            out_str[i++] = *str++;
+        }
+        out_str[i] = '\0';
+        // Skip spaces and '='
+        while (*str == ' ' || *str == '=') str++;
+        // Read integer
+        int sign = 1;
+        if (*str == '-') { sign = -1; str++; }
+        int val = 0;
+        int found_digit = 0;
+        while (*str >= '0' && *str <= '9') {
+            val = val * 10 + (*str - '0');
+            str++;
+            found_digit = 1;
+        }
+        if (found_digit) {
+            *out_int = val * sign;
+            return 2;
+        }
+        return 1; // Only string found
+    }
+
+    int strncmp(const char* s1, const char* s2, size_t n) {
+        for (size_t i = 0; i < n; i++) {
+            if (s1[i] != s2[i] || s1[i] == '\0' || s2[i] == '\0') {
+                return (unsigned char)s1[i] - (unsigned char)s2[i];
+            }
+        }
+        return 0;
+    }
 }

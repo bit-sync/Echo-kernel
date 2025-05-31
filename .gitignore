@@ -3,3 +3,5 @@ iso
 ecImage
 .vscode
 venv
+.config.old
+.config

@@ -7,7 +7,7 @@
 - System shutdown functionality (ACPI/APM)
 - Port I/O utilities in `sys/ports.h`
 - Colored boot messages
-- Shell commands: clear, shutdown, help
+- Shell commands: clear, shutdown, help, add
 - Welcome message on boot
 
 ### Changed

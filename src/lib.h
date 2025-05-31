@@ -18,6 +18,9 @@ namespace lib {
     char* strcat(char* dest, const char* src);
     char* strncat(char* dest, const char* src, size_t n);
     const char* strchr(const char* str, int ch);
+    int strncmp(const char* s1, const char* s2, size_t n);
+    // Split a string by spaces into tokens
+    size_t split(const char* str, char** tokens, size_t max_tokens);
     
     // Memory functions
     void* memcpy(void* dest, const void* src, size_t n);
@@ -36,6 +39,9 @@ namespace lib {
     bool isupper(char c);
     char tolower(char c);
     char toupper(char c);
+    
+    // Minimal sscanf: supports "%15s = %d" pattern only
+    int mini_sscanf(const char* str, const char* fmt, char* out_str, int* out_int);
 }
 
 #endif // LIB_H

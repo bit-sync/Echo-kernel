@@ -2,6 +2,8 @@
 #include "../sys/keyboard.h"
 #include "../sys/ports.h"
 #include "../lib.h"
+#include "programs.cpp"
+
 
 using namespace lib;
 using namespace display;
@@ -69,26 +71,42 @@ namespace kernel {
         }
 
         void loop(void) {
-            char* input;
+            // Define tokens and input
+            const int MAX_TOKENS = 8;
+            char* tokens[MAX_TOKENS];
+            size_t input_count;
+            char* raw_input;
             printc("user@system:$ ", display::CL_RED);
             printc("> ", display::CL_LIGHT_BLUE);
-            input = keyboard::get_input("");
+            raw_input = keyboard::get_input("");
+            input_count = lib::split(raw_input, tokens, MAX_TOKENS);
             
-            if (strcmp(input, "clear") == 0) {
+            if (strcmp(tokens[0], "clear") == 0) {
                 clear_screen();
             }
-            else if (strcmp(input, "shutdown") == 0) {
+            else if (strcmp(tokens[0], "shutdown") == 0) {
                 printc("Shutting down...\n", display::CL_LIGHT_RED);
                 shutdown();
             }
-            else if (strcmp(input, "help") == 0) {
+            else if (strcmp(tokens[0], "add") == 0) {
+                // Expecting: add <num1> <num2>
+                if (input_count > 2) {
+                    int a = lib::atoi(tokens[1]);
+                    int b = lib::atoi(tokens[2]);
+                    addition_program(a, b);
+                } else {
+                    printc("Usage: add <num1> <num2>\n", display::CL_YELLOW);
+                }
+            }
+            else if (strcmp(tokens[0], "help") == 0) {
                 printc("clear - clear the screen\n", display::CL_LIGHT_BLUE);
                 printc("shutdown - shutdown the system\n", display::CL_LIGHT_BLUE);
+                printc("add - add two numbers. Usage: add <num1> <num2>\n", display::CL_LIGHT_BLUE);
                 printc("help - display this help message\n", display::CL_LIGHT_BLUE);
             }
             else {
                 printc("Unknown command: ", display::CL_LIGHT_BLUE);
-                print(input);
+                print(tokens[0]);
             }
             print_newline();
         }
