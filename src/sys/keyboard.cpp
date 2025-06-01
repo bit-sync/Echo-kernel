@@ -30,8 +30,13 @@ namespace keyboard {
     static bool input_ready = false;
     static bool waiting_for_input = false;
 
+    // Modifier key states (must be accessible from handler)
+    bool shift_pressed = false;
+    bool caps_lock_on = false;
+
+    // Keyboard maps must be accessible from handler
     /* Keyboard map for US QWERTY keyboard */
-    static unsigned char keyboard_map[128] = {
+    unsigned char keyboard_map[128] = {
         0,  27, '1', '2', '3', '4', '5', '6', '7', '8',
         '9', '0', '-', '=', '\b',
         '\t',
@@ -55,6 +60,45 @@ namespace keyboard {
         0,  /* Up Arrow */
         0,  /* Page Up */
         '-',
+        0,  /* Left Arrow */
+        0,
+        0,  /* Right Arrow */
+        '+',
+        0,  /* End key*/
+        0,  /* Down Arrow */
+        0,  /* Page Down */
+        0,  /* Insert Key */
+        0,  /* Delete Key */
+        0,   0,   0,
+        0,  /* F11 Key */
+        0,  /* F12 Key */
+        0,  /* All other keys are undefined */
+    };
+    // Shifted keyboard map for US QWERTY keyboard
+    unsigned char keyboard_map_shift[128] = {
+        0,  27, '!', '@', '#', '$', '%', '^', '&', '*',
+        '(', ')', '_', '+', '\b',
+        '\t',
+        'Q', 'W', 'E', 'R',
+        'T', 'Y', 'U', 'I', 'O', 'P', '{', '}', '\n',
+        0,
+        'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', ':',
+        '"', '~',   0,
+        '|', 'Z', 'X', 'C', 'V', 'B', 'N',
+        'M', '<', '>', '?',   0,
+        '*',
+        0,  /* Alt */
+        ' ',  /* Space bar */
+        0,  /* Caps lock */
+        0,  /* F1 key ... > */
+        0,   0,   0,   0,   0,   0,   0,   0,
+        0,  /* < ... F10 */
+        0,  /* Num lock*/
+        0,  /* Scroll Lock */
+        0,  /* Home key */
+        0,  /* Up Arrow */
+        0,  /* Page Up */
+        '_',
         0,  /* Left Arrow */
         0,
         0,  /* Right Arrow */
@@ -158,13 +202,44 @@ extern "C" void keyboard_handler_main(void) {
     /* Lowest bit of status will be set if buffer is not empty */
     if (status & 0x01) {
         keycode = read_port(KEYBOARD_DATA_PORT);
+
+        // Handle key releases (high bit set)
+        if (keycode & 0x80) {
+            // Key release event
+            unsigned char release_code = keycode & 0x7F;
+            if (release_code == 0x2A || release_code == 0x36) {
+                // Shift released
+                keyboard::shift_pressed = false;
+            }
+            // Ignore other releases
+            return;
+        }
+
+        // Now check for valid keycode for character input
         if(keycode < 0 || keycode >= 128) return;
 
-        // Only handle key press events (ignore key releases)
-        if(keycode & 0x80) return;
+        // Handle modifier keys (Shift, Caps Lock)
+        if (keycode == 0x2A || keycode == 0x36) { // Shift pressed
+            keyboard::shift_pressed = true;
+            return;
+        } else if (keycode == 0x3A) { // Caps Lock pressed
+            keyboard::caps_lock_on = !keyboard::caps_lock_on;
+            return;
+        }
 
-        char key = keyboard::keyboard_map[(unsigned char) keycode];
-        
+        char key;
+        // Use shifted map if Shift is pressed, or for letters, handle Caps Lock
+        if (keyboard::shift_pressed) {
+            key = keyboard::keyboard_map_shift[(unsigned char) keycode];
+        } else {
+            key = keyboard::keyboard_map[(unsigned char) keycode];
+        }
+        // Handle Caps Lock for letters
+        if (!keyboard::shift_pressed && keyboard::caps_lock_on && key >= 'a' && key <= 'z') {
+            key = key - 'a' + 'A';
+        } else if (!keyboard::shift_pressed && keyboard::caps_lock_on && key >= 'A' && key <= 'Z') {
+            key = key - 'A' + 'a';
+        }
         // Only process input if we're waiting for it
         if (keyboard::waiting_for_input && key) {
             if (key == '\n') {

@@ -31,6 +31,12 @@ namespace keyboard {
     // Get input from keyboard, similar to Python's input()
     // Returns the string entered by the user (terminated by Enter key)
     char* get_input(const char* prompt = nullptr);
+
+    // Modifier key states (extern for handler)
+    extern bool shift_pressed;
+    extern bool caps_lock_on;
+    extern unsigned char keyboard_map[128];
+    extern unsigned char keyboard_map_shift[128];
 }
 
 #endif // KEYBOARD_H
